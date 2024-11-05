@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Fictional Chocolate House Management</title>
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    </head>
+    <body>
+        <h1>Chocolate House Management</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>Add a new flavour</h2>
+        <form action="{{ url_for('add_flavour') }}" method="POST">
+            <input type="text" name="name" placeholder="Flavour Name" required>
+            <textarea name="description" placeholder="Description"></textarea>
+            <label>Seasonal:</label>
+            <input type="checkbox" name="is_seasonal">
+            <input type="text" name="season" placeholder="Season">
+            <button type="submit">Add Flavour</button>
+        </form>
+
+        <h2>Flavours List</h2>
+        <ul>
+            {% for flavour in flavours %}
+                <li>{{ flavour[1] }} - {{ flavour[2] }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Add a new Ingredient</h2>
+        <form action="{{ url_for('add_ingredient') }}" method="POST">
+            <input type="text" name="name" placeholder="Ingredient Name" required>
+            <input type="number" name="quantity" placeholder="Quantity" required>
+            <input type="text" name="unit" placeholder="Unit">
+            <textarea name="allergen_info" placeholder="Allergen Info"></textarea>
+            <button type="submit">Add Ingredient</button>
+        </form>
+
+        <h2>Ingredients List</h2>
+        <ul>
+            {% for ingredient in ingredients %}
+                <li>{{ ingredient[1] }} - {{ ingredient[2] }} {{ ingredient[3] }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Add a Customer Suggestion</h2>
+        <form action="{{ url_for('add_suggestion') }}" method="POST">
+            <input type="text" name="flavour_name" placeholder="Flavour Name" required>
+            <textarea name="description" placeholder="Suggestion Description"></textarea>
+            <textarea name="allergen_concerns" placeholder="Allergen Concerns"></textarea>
+            <button type="submit">Submit Suggestion</button>
+        </form>
+    </body>
+</html>
